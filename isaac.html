@@ -73,11 +73,12 @@
 					x: 0,
 					y: 0
 				},
-
 				portal3:{
 					x: 0,
 					y: 0
 				},
+				Str: 'Lucky numbers 1, 7, 2',
+
 
 				init: function (wid, he, target) {						// Создание начального лабиринта в памяти, хранится как массив массивов ячеек
 					this.field = [];
@@ -163,6 +164,7 @@
 						}
 						table.appendChild(tr);
 					}
+					document.getElementById('last steps').innerHTML = this.Str;
 				},
 
 				check: function(x, y) {						// Функция проверки возможности движения или события(например портал) при переходе
@@ -171,8 +173,10 @@
 					else
 						if (this.field[y][x] == 1)
 							return 1;
-					if (this.field[y][x] == 2)
+					if (this.field[y][x] == 2) {
+						this.Str = 'Where are me???';  		//Работа с строкой после входа в портал
 						return 2;
+					}
 					return 0;
 				},
 
@@ -184,7 +188,9 @@
 						return;
 					if (e.code == 'KeyR')
 						action();
+
 					if (e.code == 'ArrowLeft'){
+						this.Str = 'Left';
 						t1 = this.check((this.player.x--)-1, this.player.y)
 						if (t1 == 1)
 							this.player.x++;
@@ -193,6 +199,7 @@
 					}
 
 					if (e.code == 'ArrowRight'){
+						this.Str = 'Right';
 						t2 = this.check((this.player.x++)+1, this.player.y)
 						if (t2 == 1)
 							this.player.x--;
@@ -201,6 +208,7 @@
 					}
 
 					if (e.code == 'ArrowUp'){
+						this.Str = 'Up';
 						t3 = this.check(this.player.x, (this.player.y--)-1)
 						if (t3 == 1)
 							this.player.y++;
@@ -209,12 +217,15 @@
 					}
 
 					if (e.code == 'ArrowDown'){
+						this.Str = 'Down';
 						t4 = this.check(this.player.x, (this.player.y++)+1)
 						if (t4 == 1)
 							this.player.y--;
 						else if(t4 == 2)
-								this.player.x = this.portal3.x, this.player.y = this.portal3.y;
+								this.player.x = this.portal3.x, this.player.y = this.portal3.y;						
 					}
+
+					
 
 					this.draw(this.target);
 				} 
@@ -235,7 +246,7 @@
 
 		</script>
 
-
+		<h1 id="last steps"></h1> 									<!-- Работа с текстовым окном, показывает что да как, последнее действие!! -->
 		
 	</body>
 </html>
