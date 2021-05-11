@@ -1,0 +1,225 @@
+<html>
+	<head>
+		<title>
+			ISAAC 1.6.1
+		</title>
+		<style>
+		td { 
+			width: 32px;
+			height: 32px;
+		}
+
+		td.wall {
+			background: url('/Users/egorsafronov/Desktop/Project Isaac/wall.png');
+		}
+		td.portal1{
+			background: url('/Users/egorsafronov/Desktop/Project Isaac/portal1.png');
+		}
+		td.portal2{
+			background: url('/Users/egorsafronov/Desktop/Project Isaac/portal2.png');
+		}
+		td.portal3{
+			background: url('/Users/egorsafronov/Desktop/Project Isaac/portal2.png');
+		}
+
+		td.player{
+			background: url('/Users/egorsafronov/Desktop/Project Isaac/isaac3valid.png');
+		/*	background-color: lightgreen; */
+		}
+		table {
+    		border: 3px solid black; 
+    		background: rgb(193, 193, 193);
+   		}
+		</style>
+	</head>
+	<body>
+		<label>Input height:</label>
+		<input type = "number" id = "height" value = "17"/>
+
+		<label>Input width:</label>
+		<input type = "number" id = "width" value = "35"/>
+
+		<button onclick="action()">Press to generate random maze</button>
+		<table id = "res" border = "0px" cellspacing="0px" cellpadding="0px"> </table>
+
+		<script type="text/javascript">
+			var maze = {
+				w: 0,
+				h: 0,
+				field: null,
+				target: null,
+				player: {
+					x: 0,
+					y: 0
+				},
+				portal1:{
+					x: 0,
+					y: 0
+				},
+				portal2:{
+					x: 0,
+					y: 0
+				},
+
+				portal3:{
+					x: 0,
+					y: 0
+				},
+
+				init: function (wid, he, target) {
+					this.field = [];
+					this.target = target;
+					var table = document.getElementById(target);
+
+					for (var j = 0; j < he; j++) {
+						var a = [];
+						for(var i = 0; i < wid; i++)
+							a.push(Math.floor(Math.random() * 10) % 4 == 0 ? 1 : 0);
+						this.field.push(a);
+					}
+					this.player.x = Math.floor(Math.random() * wid);
+					this.player.y = Math.floor(Math.random() * he);
+					this.field[this.player.y][this.player.x] = 0;
+
+					this.portal1.x = Math.floor(Math.random() * wid);
+					this.portal1.y = Math.floor(Math.random() * he);
+					this.field[this.portal1.y][this.portal1.x] = 2;
+
+					this.portal2.x = Math.floor(Math.random() * wid);
+					this.portal2.y = Math.floor(Math.random() * he);
+					this.field[this.portal2.y][this.portal2.x] = 3;
+
+					this.portal3.x = Math.floor(Math.random() * wid);
+					this.portal3.y = Math.floor(Math.random() * he);
+					this.field[this.portal3.y][this.portal3.x] = 4;
+				},
+
+				sur: function(j, i){
+					if (i+1 != this.w)
+						this.field[j][i+1] = 0;
+					if (j+1 != this.h)
+						this.field[j+1][i] = 0;
+					if (j != 0)
+						this.field[j-1][i] = 0;
+					if (i != 0)
+						this.field[j][i-1] = 0;
+
+				},
+
+				draw1: function () {
+					var table = document.getElementById(this.target);
+					table.innerHTML = '';
+					for (var j = 0; j < this.h; j++) {
+						var tr = document.createElement('tr');
+						for(var i = 0; i < this.w; i++){
+							var td = document.createElement('td');
+							if (this.field[j][i] == 1)
+								td.className = 'wall';
+							if (this.field[j][i] == 2)
+								td.className = 'portal1', this.sur(j, i);
+							if (this.field[j][i] == 3)
+								td.className = 'portal2';
+							if (this.field[j][i] == 4)
+								td.className = 'portal3';
+							if (j == this.player.y && i == this.player.x)
+								td.className = 'player', this.sur(j, i);
+							tr.appendChild(td);
+						}
+						table.appendChild(tr);
+					}
+				},
+
+				draw: function () {
+					var table = document.getElementById(this.target);
+					table.innerHTML = '';
+					for (var j = 0; j < this.h; j++) {
+						var tr = document.createElement('tr');
+						for(var i = 0; i < this.w; i++){
+							var td = document.createElement('td');
+							if (this.field[j][i] == 1)
+								td.className = 'wall';
+							if (this.field[j][i] == 2)
+								td.className = 'portal1';
+							if (this.field[j][i] == 3)
+								td.className = 'portal2';
+							if (this.field[j][i] == 4)
+								td.className = 'portal3';
+							if (j == this.player.y && i == this.player.x)
+								td.className = 'player';
+							tr.appendChild(td);
+						}
+						table.appendChild(tr);
+					}
+				},
+
+				check: function(x, y) {
+					if (x >= this.w || x == -1 || y >= this.h || y == -1)
+						return 1;
+					else
+						if (this.field[y][x] == 1)
+							return 1;
+					if (this.field[y][x] == 2)
+						return 2;
+					return 0;
+				},
+
+				keyboard: function(e) {
+					if (this.w == 0 || this.h == 0)
+						return;
+					var arrows = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'KeyR'];
+					if (arrows.indexOf(e.code) == -1)
+						return;
+					if (e.code == 'KeyR')
+						action();
+					if (e.code == 'ArrowLeft'){
+						t1 = this.check((this.player.x--)-1, this.player.y)
+						if (t1 == 1)
+							this.player.x++;
+						else if(t1 == 2)
+								this.player.x = this.portal2.x, this.player.y = this.portal2.y;
+					}
+
+					if (e.code == 'ArrowRight'){
+						t2 = this.check((this.player.x++)+1, this.player.y)
+						if (t2 == 1)
+							this.player.x--;
+						else if(t2 == 2)
+								this.player.x = this.portal2.x, this.player.y = this.portal2.y;
+					}
+
+					if (e.code == 'ArrowUp'){
+						t3 = this.check(this.player.x, (this.player.y--)-1)
+						if (t3 == 1)
+							this.player.y++;
+						else if(t3 == 2)
+								this.player.x = this.portal3.x, this.player.y = this.portal3.y;
+					}
+
+					if (e.code == 'ArrowDown'){
+						t4 = this.check(this.player.x, (this.player.y++)+1)
+						if (t4 == 1)
+							this.player.y--;
+						else if(t4 == 2)
+								this.player.x = this.portal3.x, this.player.y = this.portal3.y;
+					}
+
+					this.draw(this.target);
+				} 
+
+			};
+
+			function action() {
+				maze.w = parseInt(document.getElementById('width').value);
+				maze.h = parseInt(document.getElementById('height').value);
+				maze.init(maze.w, maze.h, 'res');
+				maze.draw1();
+				maze.draw();
+			}
+			document.body.onkeydown = function (e) {
+				maze.keyboard(e);
+				console.log(e);
+			}
+
+		</script>
+	</body>
+</html>
