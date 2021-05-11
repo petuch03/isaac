@@ -3,28 +3,41 @@
 		<title>
 			ISAAC 1.6.1
 		</title>
-		<style>
+		<style>		/* Тег style служит больше для оформления и содержит в себе различные данные такого типа: цвета, картинки, размеры объектов */
 		td { 
 			width: 32px;
 			height: 32px;
 		}
 
-		td.wall {
-			background: url('/Users/egorsafronov/Desktop/Project Isaac/wall.png');
+		/*td.wall {
+			background: url('C:/Users/evonn/Documents/NetBeansProjects/resourse_drawable/wall.png');
 		}
 		td.portal1{
-			background: url('/Users/egorsafronov/Desktop/Project Isaac/portal1.png');
+			background: url('C:/Users/evonn/Documents/NetBeansProjects/resourse_drawable/portal1.png');
 		}
 		td.portal2{
-			background: url('/Users/egorsafronov/Desktop/Project Isaac/portal2.png');
+			background: url('C:/Users/evonn/Documents/NetBeansProjects/resourse_drawable/portal2.png');
+		}                                                                                               это твои фотки и background, так коментить менее запарно
+		td.portal3{
+			background: url('C:/Users/evonn/Documents/NetBeansProjects/resourse_drawable/portal2.png');
+		}
+		td.player{
+			background: url('C:/Users/evonn/Documents/NetBeansProjects/resourse_drawable/pukich.png');
+		}*/
+		td.wall {
+			background: url('/Users/egorsafronov/Desktop/Project Isaac/wall.png');  
+		}
+		td.portal1{
+			background: url('/Users/egorsafronov/Desktop/Project Isaac/portal1.png'); 
+		}
+		td.portal2{
+			background: url('/Users/egorsafronov/Desktop/Project Isaac/portal2.png'); 
 		}
 		td.portal3{
-			background: url('/Users/egorsafronov/Desktop/Project Isaac/portal2.png');
+			background: url('/Users/egorsafronov/Desktop/Project Isaac/portal2.png'); 
 		}
-
 		td.player{
-			background: url('/Users/egorsafronov/Desktop/Project Isaac/isaac3valid.png');
-		/*	background-color: lightgreen; */
+			background: url('/Users/egorsafronov/Desktop/Project Isaac/isaac3valid.png'); 
 		}
 		table {
     		border: 3px solid black; 
@@ -42,7 +55,7 @@
 		<button onclick="action()">Press to generate random maze</button>
 		<table id = "res" border = "0px" cellspacing="0px" cellpadding="0px"> </table>
 
-		<script type="text/javascript">
+		<script type="text/javascript"> // тег script -- сущность проекта, внутри него происходят вся реализация на языке js
 			var maze = {
 				w: 0,
 				h: 0,
@@ -66,7 +79,7 @@
 					y: 0
 				},
 
-				init: function (wid, he, target) {
+				init: function (wid, he, target) {						// Создание начального лабиринта в памяти, хранится как массив массивов ячеек
 					this.field = [];
 					this.target = target;
 					var table = document.getElementById(target);
@@ -94,7 +107,7 @@
 					this.field[this.portal3.y][this.portal3.x] = 4;
 				},
 
-				sur: function(j, i){
+				sur: function(j, i){						// Отброс неудачного расположения важных объектов(убираются стены от портала-входа, старта)
 					if (i+1 != this.w)
 						this.field[j][i+1] = 0;
 					if (j+1 != this.h)
@@ -106,7 +119,7 @@
 
 				},
 
-				draw1: function () {
+				draw1: function () {						// Отрисовка начального поля при помощи функции sur(начальное поле != поле после init)
 					var table = document.getElementById(this.target);
 					table.innerHTML = '';
 					for (var j = 0; j < this.h; j++) {
@@ -129,7 +142,7 @@
 					}
 				},
 
-				draw: function () {
+				draw: function () {							// Отрисовка поля, после любого события, триггера 
 					var table = document.getElementById(this.target);
 					table.innerHTML = '';
 					for (var j = 0; j < this.h; j++) {
@@ -152,7 +165,7 @@
 					}
 				},
 
-				check: function(x, y) {
+				check: function(x, y) {						// Функция проверки возможности движения или события(например портал) при переходе
 					if (x >= this.w || x == -1 || y >= this.h || y == -1)
 						return 1;
 					else
@@ -163,7 +176,7 @@
 					return 0;
 				},
 
-				keyboard: function(e) {
+				keyboard: function(e) { 					// Функция, фиксирующая и отрабатывающая движения
 					if (this.w == 0 || this.h == 0)
 						return;
 					var arrows = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'KeyR'];
@@ -208,7 +221,7 @@
 
 			};
 
-			function action() {
+			function action() {										// Функция первоначальной отрисовки и задания начальных объектов
 				maze.w = parseInt(document.getElementById('width').value);
 				maze.h = parseInt(document.getElementById('height').value);
 				maze.init(maze.w, maze.h, 'res');
@@ -221,5 +234,8 @@
 			}
 
 		</script>
+
+
+		
 	</body>
 </html>
