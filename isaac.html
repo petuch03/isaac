@@ -48,7 +48,7 @@
 	</head>
 	<body>
 		<label>Input height:</label>
-		<input type = "number" id = "height" value = "13"/>
+		<input type = "number" id = "height" value = "10"/>
 
 		<label>Input width:</label>
 		<input type = "number" id = "width" value = "25"/>
@@ -384,15 +384,15 @@
 						var tmpX = this.player.x;
 						var tmpY = this.player.y;
 						if (this.bomb.x == null && this.bomb.y == null) {
-							if (z == 1)
-								this.bomb.x = tmpX - 1, this.bomb.y = tmpY;
-							if (z == 2)
-								this.bomb.y = tmpY - 1, this.bomb.x = tmpX;
-							if (z == 3)
-								this.bomb.x = tmpX + 1, this.bomb.y = tmpY;
-							if (z == 4)
-								this.bomb.y = tmpY + 1, this.bomb.x = tmpX;
-							if (z == 0)
+							if (z == 1 && tmpX >= 1)
+									this.bomb.x = tmpX - 1, this.bomb.y = tmpY;
+							else if (z == 2 && tmpY >= 1)
+									this.bomb.y = tmpY - 1, this.bomb.x = tmpX;
+							else if (z == 3 && tmpX + 1 < this.w)
+									this.bomb.x = tmpX + 1, this.bomb.y = tmpY;
+							else if (z == 4 && tmpY + 1 < this.h)
+									this.bomb.y = tmpY + 1, this.bomb.x = tmpX;
+							else
 								this.bomb.y = tmpY, this.bomb.x = tmpX;
 							this.bomb.plant = 'bomb has been planted';
 							}
