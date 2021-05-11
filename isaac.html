@@ -39,6 +39,7 @@
 		td.player{
 			background: url('/Users/egorsafronov/Desktop/Project Isaac/isaac3valid.png'); 
 		}
+
 		table {
     		border: 3px solid black; 
     		background: rgb(193, 193, 193);
@@ -77,7 +78,7 @@
 					x: 0,
 					y: 0
 				},
-				Str: 'Lucky numbers 1, 7, 2',
+				Str: 'Hello there',
 
 
 				init: function (wid, he, target) {						// Создание начального лабиринта в памяти, хранится как массив массивов ячеек
@@ -135,6 +136,8 @@
 								td.className = 'portal2';
 							if (this.field[j][i] == 4)
 								td.className = 'portal3';
+							if (this.field[j][i] == 5)
+								td.className = 'hui';
 							if (j == this.player.y && i == this.player.x)
 								td.className = 'player', this.sur(j, i);
 							tr.appendChild(td);
@@ -174,7 +177,7 @@
 						if (this.field[y][x] == 1)
 							return 1;
 					if (this.field[y][x] == 2) {
-						this.Str = 'Where are me???';  		//Работа с строкой после входа в портал
+						this.Str = 'Where am I???';  		//Работа с строкой после входа в портал
 						return 2;
 					}
 					return 0;
